@@ -31,11 +31,30 @@ int divceil(int x, int y){
     return 1 + ((x - 1) / y);
 }
 //stuff to declare
+string line;
+int val = 0;
 
 int main(){
     if (open_file){
         fileio("file");
     }
     //main code
-    
+    while (cin >> line){
+        int df = 0, dl = 0;
+        for (int i = 0; i < line.length(); i++){
+            if (isdigit(line[i])){
+                df = line[i] - '0';
+                dl = df;
+                break;
+            }
+        }
+        for (int i = line.length() - 1; i >= 0; i--){
+            if (isdigit(line[i])){
+                dl = line[i] - '0';
+                break;
+            }
+        }
+        val += df * 10 + dl;
+    }
+    cout << val;
 }
