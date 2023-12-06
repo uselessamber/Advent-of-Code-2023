@@ -32,7 +32,7 @@ int divceil(int x, int y){
 }
 //stuff to declare
 
-ll str_to_int(string &s){
+ull str_to_int(string &s){
     ll val = 0;
     for (char c : s){
         val *= 10;
@@ -77,7 +77,7 @@ int main(){
         }
         ll start = str_to_int(inp);
         cin >> inp;
-        ll length = str_to_int(inp);
+        ull length = str_to_int(inp);
         seeds.PB(pll(start, start + length - 1));
         //temp_seeds.PB(pll(start, start + length - 1));
     }
@@ -131,6 +131,7 @@ int main(){
         d = l_end - l_start;
         split new_split(l_start, r_start, d);
         // Split sanitization process
+        /*
         bool conflict = false;
         for (int i = 0; i < len(split_list); i++){
             if (new_split.r < split_list[i].l || split_list[i].r < new_split.l) continue;
@@ -161,10 +162,10 @@ int main(){
                 split_list[i] = new_split;
                 continue;
             }
-        }
-        if (!conflict){
+        }*/
+        //if (!conflict){
             split_list.PB(new_split);
-        }
+        //}
     }
     new_seeds.clear();
     for (pll seed : seeds){
@@ -201,7 +202,7 @@ int main(){
     }
     seeds = new_seeds;
     //seeds = temp_seeds;
-    ll ans = INF64;
+    ull ans = INF64;
     for (pll seed : seeds){
         cout << seed.FS << " - " << seed.SC << " | ";
         ans = min(ans, seed.FS);
