@@ -10,6 +10,7 @@
 #include <time.h>
 #include <math.h>
 #include <iomanip>
+#include <chrono>
 #define fileio(name) freopen(name".inp", "r", stdin); freopen(name".out", "w", stdout)
 #define len(v) (int)v.size()
 #define FS first
@@ -73,6 +74,7 @@ vf quadratic(double a, double b, double c){ // ax^2 + b^x + c = 0
 }
 
 int main(){
+    auto start = chrono::high_resolution_clock::now();
     if (open_file){
         fileio("file");
     }
@@ -99,4 +101,8 @@ int main(){
         }
     }
     cout << ans;
+
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> duration = end - start;
+    cerr << "Time elapsed: " << duration.count() << "s\n";
 }
