@@ -10,6 +10,7 @@
 #include <time.h>
 #include <math.h>
 #include <iomanip>
+#include <sstream>
 #define fileio(name) freopen(name".inp", "r", stdin); freopen(name".out", "w", stdout)
 #define len(v) (int)v.size()
 #define FS first
@@ -32,10 +33,39 @@ int divceil(int x, int y){
 }
 //stuff to declare
 
+vector<vector <ll>> arr;
+int n;
+ll ans = 0;
+
 int main(){
     if (open_file){
         fileio("file");
     }
     //main code
-    
+    string line;
+    while (getline(cin, line)){
+        arr.clear();
+        stringstream ss;
+        ss.clear();
+        ss << line;
+        ll val;
+        arr.PB(vector<ll>());
+        while (ss >> val){
+            arr[0].PB(val);
+        }
+        n = len(arr[0]);
+        for (int i = 1; i < n; i++){
+            arr.PB(vector<ll>(n - i, 0));
+            for (int j = 0; j < n - i; j++){
+                arr[i][j] = arr[i - 1][j + 1] - arr[i - 1][j];
+            }
+        }
+        arr[n - 1].PB(0);
+        for (int i = n - 2; i >= 0; i--){
+            arr[i].PB(arr[i][len(arr[i]) - 1] + arr[i + 1][len(arr[i + 1]) - 1]);
+        }
+        cout << arr[0][len(arr[0]) - 1] << "\n";
+        ans += arr[0][len(arr[0]) - 1];
+    }
+    cout << ans;
 }

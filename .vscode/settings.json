@@ -12,7 +12,8 @@
         "deque": "cpp",
         "string": "cpp",
         "vector": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "*.tcc": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
