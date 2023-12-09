@@ -11,6 +11,7 @@
 #include <math.h>
 #include <iomanip>
 #include <sstream>
+#include <chrono>
 #define fileio(name) freopen(name".inp", "r", stdin); freopen(name".out", "w", stdout)
 #define len(v) (int)v.size()
 #define FS first
@@ -38,6 +39,7 @@ int n;
 ll ans = 0;
 
 int main(){
+    auto start = chrono::high_resolution_clock::now();
     if (open_file){
         fileio("file");
     }
@@ -65,8 +67,10 @@ int main(){
         for (int i = n - 2; i >= 0; i--){
             arr[i].PB(arr[i][len(arr[i]) - 1] + arr[i + 1][len(arr[i + 1]) - 1]);
         }
-        cout << arr[0][len(arr[0]) - 1] << "\n";
         ans += arr[0][len(arr[0]) - 1];
     }
     cout << ans;
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> duration = end - start;
+    cerr << "Time elapsed: " << duration.count() << "s\n";
 }
