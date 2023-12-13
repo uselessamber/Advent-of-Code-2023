@@ -10,6 +10,7 @@
 #include <time.h>
 #include <math.h>
 #include <iomanip>
+#include <chrono>
 #define fileio(name) freopen(name".inp", "r", stdin); freopen(name".out", "w", stdout)
 #define len(v) (int)v.size()
 #define FS first
@@ -33,9 +34,14 @@ int divceil(int x, int y){
 //stuff to declare
 
 int main(){
+    auto start = chrono::high_resolution_clock::now();
     if (open_file){
         fileio("file");
     }
     //main code
-    
+
+    //end code
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> duration = end - start;
+    cerr << "Time elapsed: " << duration.count() << "s\n";
 }
