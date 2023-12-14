@@ -24,7 +24,7 @@ typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 typedef vector<int> vi;
 const bool open_file = true;
-const int N = 1e6 + 7;
+const int N = 1e3 + 7;
 const int INF = 1e9 + 7;
 const double EPS = 1e-9;
 const ll INF64 = 1e16 + 7;
@@ -32,6 +32,8 @@ int divceil(int x, int y){
     return 1 + ((x - 1) / y);
 }
 //stuff to declare
+char input[N][N];
+int row_count, col_count;
 
 int main(){
     auto start = chrono::high_resolution_clock::now();
@@ -39,6 +41,14 @@ int main(){
         fileio("file");
     }
     //main code
+    string txt;
+    while (cin >> txt){
+        row_count += 1;
+        col_count = txt.length();
+        for (int i = 0; i < col_count; i++){
+            input[row_count - 1][i] = txt[i];
+        }
+    }
 
     //end code
     auto end = chrono::high_resolution_clock::now();

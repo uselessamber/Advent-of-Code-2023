@@ -32,9 +32,6 @@ int divceil(int x, int y){
     return 1 + ((x - 1) / y);
 }
 //stuff to declare
-vector <string> input;
-int row_count, col_count;
-vi space_count;
 
 int main(){
     auto start = chrono::high_resolution_clock::now();
@@ -42,31 +39,6 @@ int main(){
         fileio("file");
     }
     //main code
-
-    string txt;
-    while (cin >> txt){
-        row_count += 1;
-        col_count = txt.length();
-        input.PB(txt);
-    }
-    space_count.assign(col_count, 0);
-    int ans = 0;
-    for (int r = 0; r < row_count; r++){
-        for (int c = 0; c < col_count; c++){
-            switch(input[r][c]){
-                case '#':
-                    space_count[c] = 0;
-                    break;
-                case '.':
-                    space_count[c]++;
-                    break;
-                case 'O':
-                    ans += (row_count - r) + space_count[c];
-                    break;
-            }
-        }
-    }
-    cout << ans;
 
     //end code
     auto end = chrono::high_resolution_clock::now();
