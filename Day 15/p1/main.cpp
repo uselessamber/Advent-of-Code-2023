@@ -33,12 +33,31 @@ int divceil(int x, int y){
 }
 //stuff to declare
 
+ll hashing(ll current_value, char input){
+    return ((current_value + (int)input) * 17) % 256;
+}
+
+ll final_ans;
+
 int main(){
     auto start = chrono::high_resolution_clock::now();
     if (open_file){
         fileio("file");
     }
     //main code
+
+    char test;
+    ll current_hash = 0;
+    while (cin >> test){
+        if (test == ','){
+            final_ans += current_hash;
+            current_hash = 0;
+        }else{
+            current_hash = hashing(current_hash, test);
+        }
+    }
+    final_ans += current_hash;
+    cout << final_ans;
 
     //end code
     auto end = chrono::high_resolution_clock::now();
