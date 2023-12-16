@@ -32,6 +32,103 @@ int divceil(int x, int y){
     return 1 + ((x - 1) / y);
 }
 //stuff to declare
+const int dr[4] = {0, 1, 0, -1}; // >, v, <, ^
+const int dc[4] = {1, 0, -1, 0};
+const int dm1[4] = {3, 2, 1, 0};
+const int dm2[4] = {1, 0, 3, 2};
+vector <string> input_map;
+int row_count, col_count;
+vector<vector<int>> visit; // visit[r][c][d] // row column direction
+
+void init(){
+    visit.assign(row_count, vector<int>(col_count, 0));
+}
+
+bool bound(int row, int col){
+    return (0 <= row) && (row < row_count) && (0 <= col) && (col < col_count);
+}
+
+void enqueue(int row, int col, int dir, queue <pair <pair<int, int>, int>> &q, int &energy_count){
+    if (bound(row, col) && ((visit[row][col] & (1 << dir)) == 0)){
+        q.push(pair <pair<int, int>, int>(
+            pair<int, int>(
+                row, 
+                col
+            ), 
+            dir
+        ));
+        if (visit[row][col] == 0)
+            energy_count += 1;
+        visit[row][col] |= (1 << dir);
+    }
+}
+
+int bfs(int row_begin, int col_begin, int direction_begin){
+    init();
+    int energized = 1;
+    queue <pair <pair<int, int>, int>> light; // r, c, d // row column direction
+    visit[row_begin][col_begin] |= (1 << direction_begin);
+    light.push(pair <pair<int, int>, int>(pair<int, int>(row_begin, col_begin), direction_begin));
+    while (!light.empty()){
+        int current_row = light.front().first.first;
+        int current_col = light.front().first.second;
+        int current_dir = light.front().second;
+        int new_row, new_col, new_dir;
+        light.pop();
+        switch (input_map[current_row][current_col]){
+            case '.':
+                new_row = current_row + dr[current_dir];
+                new_col = current_col + dc[current_dir];
+                enqueue(new_row, new_col, current_dir, light, energized);
+            break;
+            case '/':
+                new_dir = dm1[current_dir];
+                new_row = current_row + dr[new_dir];
+                new_col = current_col + dc[new_dir];
+                enqueue(new_row, new_col, new_dir, light, energized);
+            break;
+            case '\\':
+                new_dir = dm2[current_dir];
+                new_row = current_row + dr[new_dir];
+                new_col = current_col + dc[new_dir];
+                enqueue(new_row, new_col, new_dir, light, energized);
+            break;
+            case '|':
+                if ((current_dir & 1)){
+                    new_row = current_row + dr[current_dir];
+                    new_col = current_col + dc[current_dir];
+                    enqueue(new_row, new_col, current_dir, light, energized);
+                }else{
+                    new_dir = (current_dir + 1) % 4;
+                    new_row = current_row + dr[new_dir];
+                    new_col = current_col + dc[new_dir];
+                    enqueue(new_row, new_col, new_dir, light, energized);
+                    new_dir = (current_dir + 4 - 1) % 4;
+                    new_row = current_row + dr[new_dir];
+                    new_col = current_col + dc[new_dir];
+                    enqueue(new_row, new_col, new_dir, light, energized);                
+                }
+            break;
+            case '-':
+                if (!(current_dir & 1)){
+                    new_row = current_row + dr[current_dir];
+                    new_col = current_col + dc[current_dir];
+                    enqueue(new_row, new_col, current_dir, light, energized);
+                }else{
+                    new_dir = (current_dir + 1) % 4;
+                    new_row = current_row + dr[new_dir];
+                    new_col = current_col + dc[new_dir];
+                    enqueue(new_row, new_col, new_dir, light, energized);
+                    new_dir = (current_dir + 4 - 1) % 4;
+                    new_row = current_row + dr[new_dir];
+                    new_col = current_col + dc[new_dir];
+                    enqueue(new_row, new_col, new_dir, light, energized);                 
+                }
+            break;
+        }
+    }
+    return energized;
+}
 
 int main(){
     auto start = chrono::high_resolution_clock::now();
@@ -39,7 +136,20 @@ int main(){
         fileio("file");
     }
     //main code
-
+    string inp;
+    while (cin >> inp){
+        col_count = inp.length();
+        row_count++;
+        input_map.push_back(inp);
+    }
+    int ans = 0;
+    for (int i = 0; i < row_count; i++){
+        ans = max({ans, bfs(i, 0, 0), bfs(i, col_count - 1, 2)});
+    }
+    for (int i = 0; i < col_count; i++){
+        ans = max({ans, bfs(0, i, 1), bfs(row_count - 1, i, 3)});
+    }
+    cout << ans;
     //end code
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double> duration = end - start;
